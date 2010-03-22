@@ -1,11 +1,18 @@
-﻿using System;
+﻿/*
+ *  Author: Nicholas Lozon
+ *  Date:   March 22, 2010
+ *  Description: Server class to handle all game logic.
+ *  Implements: IGame
+ *  Changes:
+ *      March 22, 2010 - Added member and methods: PlayerOneScore, PlayerTwoScore,
+ *          PlayerTurn, RevealedCells, revealBomb, revealCell.
+ */
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Runtime.Remoting.Contexts; // Synchronization
 using GameLibrary;
-
-using System.IO; // Why?
 
 namespace GameServer
 {

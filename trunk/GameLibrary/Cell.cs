@@ -1,4 +1,11 @@
-﻿using System;
+﻿/*
+ *  Author: Nicholas Lozon
+ *  Date:   March 22, 2010
+ *  Description: Defines all properties of a cell.
+ *  Changes:
+ */
+
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;

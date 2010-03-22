@@ -1,4 +1,10 @@
-﻿using System;
+﻿/*
+ *  Author: Nicholas Lozon
+ *  Date:   March 22, 2010
+ *  Description: Registers the http channel and handles the gamestate.
+ *  Changes:
+ */
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;

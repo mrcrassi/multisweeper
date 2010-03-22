@@ -1,4 +1,10 @@
-﻿using System;
+﻿/*
+ *  Author: Nicholas Lozon
+ *  Date:   March 22, 2010
+ *  Description: Client interface to the server game object.
+ *  Changes:
+ */
+using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Data;
@@ -14,7 +20,7 @@ namespace GameClient
 {
     public partial class FormGame : Form
     {
-        private IGame m_gameState;
+        private IGame m_gameState; // Game state variable
 
         public FormGame()
         {
@@ -25,10 +31,9 @@ namespace GameClient
                 // Load the remoting configuration file
                 RemotingConfiguration.Configure("remoting.config", false);
 
+                // TODO: Remove this for the remoting.config
                 m_gameState = (IGame)Activator.GetObject(typeof(IGame),
                     "http://localhost:10000/gamestate.soap");
-
-                MessageBox.Show(m_gameState.PlayerOneScore.ToString());
             }
             catch (Exception ex)
             {
