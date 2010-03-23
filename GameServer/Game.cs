@@ -6,6 +6,16 @@
  *  Changes:
  *      March 22, 2010 - Added member and methods: PlayerOneScore, PlayerTwoScore,
  *          PlayerTurn, RevealedCells, revealBomb, revealCell.
+ *      March 22, 2010 - Added revealMineBorders and surroundingCells functions.
+ *                     - Modified Cell arrays to be List< List<Cell> > instead of List< Cell >
+ *      March 23, 2010 - Removed cell arrays and revealMineBorders/surroundingCells functions and
+ *          put them in the new Board class.
+ *              Added a board members.
+ *              Added constructor
+ *              Adapted revealCell and revealMine functions to take two integer location paremters.
+ *              Added a playersTurn() function to check if the player requesting an action is the
+ *                  correct player to take a turn.
+ *              Renamed revealBomb to revealMine.
  */
 using System;
 using System.Collections.Generic;
@@ -23,9 +33,7 @@ namespace GameServer
         private String playerTurn;
         private int m_playerOneScore;
         private int m_playerTwoScore;
-        private List< List<Cell> > m_revealedCells;
-        private List< List<Cell> > m_unrevealedCells;
-        private int m_boardWidth, m_boardHeight;
+        private Board m_board;
 
         // Accessors
         public String PlayerTurn
@@ -43,54 +51,54 @@ namespace GameServer
             get { return m_playerTwoScore; }
         }
 
-        public List< List<Cell> > RevealedCells
+        public IBoard Board // return as IBoard for the GameLibrary
         {
-            get { return m_revealedCells; }
+            get { return m_board; }
         }
 
         // Constructor
         public Game()
         {
-            
+            m_board = new Board(10, 10);
+
+            //Todo: Set the player turn
         }
 
         // Public methods
-        public void revealCell()
+
+        // Player attempts to reveal a cell (non-mine)
+        public void revealCell(int locX, int locY)
         {
+            if (m_board.revealCell(locX, locY))
+            {
+                // TODO: Need functionality
+            }
+            else
+            {
+                // TODO: Need functionality
+            }
         }
 
-        public void revealBomb()
+        // Player attempts to reveal a mine
+        public void revealMine(int locX, int locY)
         {
+            if (m_board.revealMine(locX, locY))
+            {
+                // TODO: Need functionality
+            }
+            else
+            {
+                // TODO: Need functionality
+            }
         }
 
         // Helper methods
 
-        // Returns the surrounding cells of the cell parameter
-        private List< List<Cell> > surroundingCells(Cell cell)
+        // Checks if the player performing the action is the one in turn
+        private bool playersTurn()
         {
-            List< List<Cell> > cells = new List< List<Cell> >();
-
-            for (int i = -1; i != 2; ++i)
-            {
-                for (int j = -1; j != 2; ++j)
-                {
-                    if (i != 0 && j != 0)
-                    {
-                        cells[i].Add(m_unrevealedCells[i][j]);
-                    }
-                }
-            }
-
-            return cells;
-        }
-
-        // Reveals all cells around a mine who no long have a reference to an unrevealed mine
-        private void revealMineBorders(Cell mine)
-        {
-            foreach (List<Cell> row in surroundingCells(mine))
-                foreach (Cell borderCell in row)
-                    if (borderCell.UnrevealedMines == 0)
-                        m_revealedCells[row.IndexOf(borderCell)].Add(borderCell);
+            // TODO: Need functionality
+            return true;
         }
     }
 }
