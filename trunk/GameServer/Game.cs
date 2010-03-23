@@ -23,8 +23,9 @@ namespace GameServer
         private String playerTurn;
         private int m_playerOneScore;
         private int m_playerTwoScore;
-        private List<Cell> m_revealedCells;
-        private List<Cell> m_unrevealedCells;
+        private List< List<Cell> > m_revealedCells;
+        private List< List<Cell> > m_unrevealedCells;
+        private int m_boardWidth, m_boardHeight;
 
         // Accessors
         public String PlayerTurn
@@ -42,7 +43,7 @@ namespace GameServer
             get { return m_playerTwoScore; }
         }
 
-        public List<Cell> RevealedCells
+        public List< List<Cell> > RevealedCells
         {
             get { return m_revealedCells; }
         }
@@ -63,5 +64,33 @@ namespace GameServer
         }
 
         // Helper methods
+
+        // Returns the surrounding cells of the cell parameter
+        private List< List<Cell> > surroundingCells(Cell cell)
+        {
+            List< List<Cell> > cells = new List< List<Cell> >();
+
+            for (int i = -1; i != 2; ++i)
+            {
+                for (int j = -1; j != 2; ++j)
+                {
+                    if (i != 0 && j != 0)
+                    {
+                        cells[i].Add(m_unrevealedCells[i][j]);
+                    }
+                }
+            }
+
+            return cells;
+        }
+
+        // Reveals all cells around a mine who no long have a reference to an unrevealed mine
+        private void revealMineBorders(Cell mine)
+        {
+            foreach (List<Cell> row in surroundingCells(mine))
+                foreach (Cell borderCell in row)
+                    if (borderCell.UnrevealedMines == 0)
+                        m_revealedCells[row.IndexOf(borderCell)].Add(borderCell);
+        }
     }
 }

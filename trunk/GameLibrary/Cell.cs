@@ -14,5 +14,14 @@ namespace GameLibrary
 {
     public class Cell
     {
+        private int m_unrevealedMines;
+
+        public int UnrevealedMines
+        {
+            get
+            {
+                return m_unrevealedMines;
+            }
+        }
     }
 }

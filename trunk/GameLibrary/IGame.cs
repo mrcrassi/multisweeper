@@ -19,7 +19,7 @@ namespace GameLibrary
         int PlayerOneScore { get; }
         int PlayerTwoScore { get; }
         String PlayerTurn { get; }
-        List<Cell> RevealedCells { get; }
+        List< List<Cell> > RevealedCells { get; }
 
         // Methods
         /*
