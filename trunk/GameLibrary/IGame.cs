@@ -5,6 +5,9 @@
  *  Changes:
  *      March 22, 2010 - Added member and methods: PlayerOneScore, PlayerTwoScore,
  *          PlayerTurn, RevealedCells, revealBomb, revealCell.
+ *      March 23, 2010 - Removed RevealedCells member - this has been adapted into the Board class.
+ *          Updated revealBomb and revealCells parameters to take two ints for X and Y location.
+ *          Renamed revealBomb to revealMine.
  */
 using System;
 using System.Collections.Generic;
@@ -19,16 +22,16 @@ namespace GameLibrary
         int PlayerOneScore { get; }
         int PlayerTwoScore { get; }
         String PlayerTurn { get; }
-        List< List<Cell> > RevealedCells { get; }
+        IBoard Board { get; }
 
         // Methods
         /*
          * Author:  Nicholas Lozon
          * Date:    March 22, 2010
-         * Description: Player attempts to reveal a bomb on a unrevealed cell.
+         * Description: Player attempts to reveal a mine on a unrevealed cell.
          * Changes: 
          */
-        void revealBomb();
+        void revealMine(int locX, int locY);
 
         /*
          * Author:  Nicholas Lozon
@@ -36,6 +39,6 @@ namespace GameLibrary
          * Description: Player attempts to reveal an empty cell.
          * Changes: 
          */
-        void revealCell();
+        void revealCell(int locX, int locY);
     }
 }
