@@ -16,6 +16,9 @@
  *              Added a playersTurn() function to check if the player requesting an action is the
  *                  correct player to take a turn.
  *              Renamed revealBomb to revealMine.
+ *      March 29, 2010 - Added function for registering a client callback.
+ *          Added function for firing a callback.
+ *          Added a list of client callback objects.
  */
 using System;
 using System.Collections.Generic;
@@ -34,6 +37,7 @@ namespace GameServer
         private int m_playerOneScore;
         private int m_playerTwoScore;
         private Board m_board;
+        private List<ICallback> m_clientCallbacks = new List<ICallback>();
 
         // Accessors
         public String PlayerTurn
@@ -66,6 +70,11 @@ namespace GameServer
 
         // Public methods
 
+        public void RegisterClientCallback(ICallback callback)
+        {
+            m_clientCallbacks.Add(callback);
+        }
+
         // Player attempts to reveal a cell (non-mine)
         public void revealCell(int locX, int locY)
         {
@@ -77,6 +86,8 @@ namespace GameServer
             {
                 // TODO: Need functionality
             }
+
+            Fire_UpdateClients();
         }
 
         // Player attempts to reveal a mine
@@ -90,6 +101,8 @@ namespace GameServer
             {
                 // TODO: Need functionality
             }
+
+            Fire_UpdateClients();
         }
 
         // Helper methods
@@ -99,6 +112,12 @@ namespace GameServer
         {
             // TODO: Need functionality
             return true;
+        }
+
+        private void Fire_UpdateClients()
+        {
+            foreach (ICallback callback in m_clientCallbacks)
+                callback.UpdateBoardCallback();
         }
     }
 }
