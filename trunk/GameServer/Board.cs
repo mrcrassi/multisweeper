@@ -138,7 +138,7 @@ namespace GameServer
         //          and return true, else return false.
         public bool revealMine(int locX, int locY)
         {
-            // Get the cell and the given location
+            // Get the cell of the given location
             Cell cell = getCell(locX, locY);
 
             // Reveal the cell

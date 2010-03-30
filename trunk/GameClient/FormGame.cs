@@ -3,6 +3,8 @@
  *  Date:   March 22, 2010
  *  Description: Client interface to the server game object.
  *  Changes:
+ *      March 29, 2010 - Added UpdateGame function and registered
+ *          the client callback function with the server.
  */
 using System;
 using System.Collections.Generic;
@@ -34,11 +36,24 @@ namespace GameClient
                 // TODO: Remove this for the remoting.config
                 m_gameState = (IGame)Activator.GetObject(typeof(IGame),
                     "http://localhost:10000/gamestate.soap");
+
+                // Register callback
+                m_gameState.RegisterClientCallback(new Callback(this));
+
+                // TEST CODE
+                m_gameState.revealCell(1, 1);
             }
             catch (Exception ex)
             {
                 MessageBox.Show(ex.Message);
             }
+        }
+
+        // March 29, 2010
+        public void UpdateGame()
+        {
+            // Update the game here
+            MessageBox.Show("Callback received!");
         }
     }
 }
