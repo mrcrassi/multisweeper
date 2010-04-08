@@ -9,8 +9,10 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 
-using GameLibrary;
+using MultiSweeper.GameLibrary;
 
+namespace MultiSweeper
+{
 namespace GameClient
 {
     public class Callback : MarshalByRefObject, ICallback
@@ -28,4 +30,5 @@ namespace GameClient
             frm.UpdateGame();
         }
     }
+}
 }

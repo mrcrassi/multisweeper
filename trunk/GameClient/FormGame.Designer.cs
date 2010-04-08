@@ -1,4 +1,6 @@
-﻿namespace GameClient
+﻿namespace MultiSweeper
+{
+namespace GameClient
 {
     partial class FormGame
     {
@@ -35,4 +37,5 @@
 
         #endregion
     }
+}
 }

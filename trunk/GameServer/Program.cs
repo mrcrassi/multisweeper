@@ -8,10 +8,12 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
-using GameLibrary;
+using MultiSweeper.GameLibrary;
 
 using System.Runtime.Remoting;  // RemotingConfiguration class
 
+namespace MultiSweeper
+{
 namespace GameServer
 {
     class Program
@@ -36,4 +38,5 @@ namespace GameServer
             }
         }
     }
+}
 }
