@@ -1,8 +1,8 @@
 ﻿/*
- *  Author: Nicholas Lozon
- *  Date:   March 22, 2010
- *  Description: Registers the http channel and handles the gamestate.
- *  Changes:
+ * Author:	Nicholas Lozon
+ * Date:	March 22, 2010
+ * Details:	Registers the http channel and handles the gamestate.
+ * Changes:
  */
 using System;
 using System.Collections.Generic;

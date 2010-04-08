@@ -1,8 +1,8 @@
 ﻿/*
- *  Author: Nicholas Lozon
- *  Date:   March 29, 2010
- *  Description: Class for the server to callback on.
- *  Changes:
+ * Author:	Nicholas Lozon
+ * Date:	March 29, 2010
+ * Details:	Class for the server to callback on.
+ * Changes:
  */
 using System;
 using System.Collections.Generic;

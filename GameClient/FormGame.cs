@@ -1,10 +1,10 @@
 ﻿/*
- *  Author: Nicholas Lozon
- *  Date:   March 22, 2010
- *  Description: Client interface to the server game object.
- *  Changes:
- *      March 29, 2010 - Added UpdateGame function and registered
- *          the client callback function with the server.
+ * Author: Nicholas Lozon
+ * Date:   March 22, 2010
+ * Description: Client interface to the server game object.
+ * Changes:
+ *		March 29, 2010
+ *			- Added UpdateGame function and registered the client callback function with the server.
  */
 using System;
 using System.Collections.Generic;
@@ -41,7 +41,11 @@ namespace GameClient
                 m_gameState.RegisterClientCallback(new Callback(this));
 
                 // TEST CODE
-                m_gameState.revealCell(1, 1);
+                m_gameState.revealCell(2, 2);
+                foreach (Cell cell in m_gameState.Board.ClientCells)
+                {
+                    MessageBox.Show("Is Mine? " + cell.IsMine.ToString() + "\nPerimitive Mines: " + cell.PerimitiveMines + "\nLocation: " + cell.LocX + "," + cell.LocY);
+                }
             }
             catch (Exception ex)
             {
@@ -53,7 +57,6 @@ namespace GameClient
         public void UpdateGame()
         {
             // Update the game here
-            MessageBox.Show("Callback received!");
         }
     }
 }
