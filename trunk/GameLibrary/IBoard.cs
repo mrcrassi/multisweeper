@@ -1,10 +1,13 @@
 ﻿/*
- *  Author: Nicholas Lozon
- *  Date:   March 23, 2010
- *  Description: Client interface to the board object.
- *  Changes:
- *      March 23, 2010 - Initial creation.
- *      Added member and methods: BoardWidth, BoardHeight, RevealedCells.
+ * Author:	Nicholas Lozon
+ * Date:	March 23, 2010
+ * Details:	Client interface to the board object.
+ * Changes:
+ *		March 23, 2010
+ *			- Initial creation.
+ *			- Added member and methods: BoardWidth, BoardHeight, RevealedCells.
+ *		April 7, 2010
+ *			- List<ICell> converted to ICell[] for serialization.
  */
 using System;
 using System.Collections.Generic;
@@ -17,6 +20,6 @@ namespace GameLibrary
     {
         int BoardWidth { get; }
         int BoardHeight { get; }
-        List<Cell> RevealedCells { get; }
+        Cell[] ClientCells { get; }
     }
 }
