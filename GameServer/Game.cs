@@ -28,8 +28,10 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Runtime.Remoting.Contexts; // Synchronization
-using GameLibrary;
+using MultiSweeper.GameLibrary;
 
+namespace MultiSweeper
+{
 namespace GameServer
 {
     [Synchronization]
@@ -155,4 +157,5 @@ namespace GameServer
                 callback.UpdateBoardCallback();
         }
     }
+}
 }

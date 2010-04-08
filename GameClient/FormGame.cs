@@ -14,10 +14,12 @@ using System.Drawing;
 using System.Linq;
 using System.Text;
 using System.Windows.Forms;
-using GameLibrary;
+using MultiSweeper.GameLibrary;
 
 using System.Runtime.Remoting; // RemotingConfiguration
 
+namespace MultiSweeper
+{
 namespace GameClient
 {
     public partial class FormGame : Form
@@ -59,4 +61,5 @@ namespace GameClient
             // Update the game here
         }
     }
+}
 }

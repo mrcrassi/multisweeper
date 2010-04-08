@@ -14,6 +14,8 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 
+namespace MultiSweeper
+{
 namespace GameLibrary
 {
     public interface IBoard
@@ -22,4 +24,5 @@ namespace GameLibrary
         int BoardHeight { get; }
         Cell[] ClientCells { get; }
     }
+}
 }

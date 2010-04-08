@@ -3,6 +3,8 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Windows.Forms;
 
+namespace MultiSweeper
+{
 namespace GameClient
 {
     static class Program
@@ -18,4 +20,5 @@ namespace GameClient
             Application.Run(new FormGame());
         }
     }
+}
 }

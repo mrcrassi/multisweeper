@@ -18,6 +18,8 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 
+namespace MultiSweeper
+{
 namespace GameLibrary
 {
     public interface IGame
@@ -38,4 +40,5 @@ namespace GameLibrary
         // Registers the client for callbacks on the server.
         void RegisterClientCallback(ICallback callback);
     }
+}
 }
