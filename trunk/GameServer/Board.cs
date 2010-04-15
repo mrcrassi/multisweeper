@@ -23,6 +23,16 @@
  *			- Updated m_clientCells to return Cell[]
  *			- Added functionality to build the cell list for the table sizes.
  *			- Added functionality to add random mines for the mine percentage.
+ *		April 14, 2010
+ *			- Regions ftw.
+ *			- The Client cells list now returns null values for unrevealed cells, this lowers
+ *				client side load for iterating through and comparing cells.
+ *			- Added a member to count the number of revealed cells. This is necessary since
+ *				the client cells list is always the same size.
+ *			- Added a revealCell helper method to encapsulate functionality
+ *			- Fixed a logic error where revealCell only returns false when it is a mine
+ *			- Fixed reveal cell borders to all cells on borders, not just ones with permitive
+ *				mines equal to 1.
  */
 using System;
 using System.Collections.Generic;
@@ -37,12 +47,21 @@ namespace GameServer
 {
     public class Board : MarshalByRefObject, IBoard
     {
-        // Members
+        #region Members
         private int m_boardWidth, m_boardHeight;
         private List<Cell> m_serverCells, m_clientCells;
         private double m_minePercentage;
+		private int m_revealedCellsCount;
 
-        // Accessors
+        #endregion
+
+        #region Accessors
+		public int RevealedCellsCount
+		{
+			get { return m_revealedCellsCount; }
+			set { m_revealedCellsCount = value; }
+		}
+		
         public int BoardWidth
         {
             get { return m_boardWidth; }
@@ -62,7 +81,9 @@ namespace GameServer
         {
             get { return m_clientCells.ToArray(); }
         }
+        #endregion
 
+		#region Constructors
 		/* Author:     Nicholas Lozon
 		 * Date:       March 24, 2010
 		 * Details:    Instantiates members, fill m_serverCells and add mines to them.
@@ -80,7 +101,8 @@ namespace GameServer
 
 			// Create cell lists
 			m_serverCells = new List<Cell>();
-			m_clientCells = new List<Cell>();
+			Cell[] test = new Cell[m_boardHeight * m_boardWidth];
+			m_clientCells = test.ToList<Cell>();
 
 			// Fill server cells list with coordinates
 			for (int y = 0; y != height; ++y) // column
@@ -113,9 +135,9 @@ namespace GameServer
 				}
 			}
 		}
+		#endregion
 
-		// Public Methods
-
+		#region Public Methods
 		/* Author:	Nicholas Lozon
 		 * Date:	March 24, 2010
 		 * Details:	Since the cells list is a 1 dimensional array to represent a 2 dimensional grid,
@@ -137,8 +159,8 @@ namespace GameServer
 		public List<Cell> surroundingCells(Cell cell)
 		{
 			List<Cell> cells = new List<Cell>(); // list to return
-			int ind = m_serverCells.IndexOf(cell); // offset by one to handle math calculations
-			int relInd = ind + 1;
+			int ind = m_serverCells.IndexOf(cell);
+			int relInd = ind + 1; // offset by one to handle math calculations
 
 			// top left
 			if (relInd % m_boardWidth != 1 && relInd > m_boardWidth)
@@ -196,8 +218,7 @@ namespace GameServer
             if (cell.Revealed == false)
             {
                 // Reveal the cell
-                cell.Revealed = true;
-                m_clientCells.Add(cell);
+                revealCell(cell);
 
                 // Check if it is a mine
                 if (cell.IsMine)
@@ -234,25 +255,24 @@ namespace GameServer
             if (cell.Revealed == false)
             {
                 // Reveal the cell
-                cell.Revealed = true;
-                m_clientCells.Add(cell);
+				revealCell(cell);
 
-                // Check if it is NOT a mine and it is doesn't have perimitive mines
-                if (!cell.IsMine && cell.PerimitiveMines == 0)
-                {
+                // Return false if its a mine
+                if(cell.IsMine)
+					return false;
+				
+				// Reveal border if it has no perimitive mines
+                if (cell.PerimitiveMines == 0)
                     revealCellBorders(cell);
-                }
-                else
-                    return false;
             }
             else
                 return false; // That location is already revealed!
 
             return true;
         }
+		#endregion
 
-        // Helper Methods
-
+		#region Helper Methods
 		/*
 		 * Author:	Nicholas Lozon
 		 * Date:	March 24, 2010
@@ -269,14 +289,13 @@ namespace GameServer
             //  if thereis no unreavealed mines related to it and it is not a mine.
             foreach (Cell cell in surroundingCells(chosenCell))
             {
-                if (cell.IsMine != true && cell.Revealed == false) // not a mine
+                if (cell.Revealed == false && cell.IsMine != true) // not a mine
                 {
                     cell.UnrevealedPerimitiveMines -= 1; // decrement the cells unrevealed mines counter
 
                     if (cell.UnrevealedPerimitiveMines == 0)
                     {
-                        cell.Revealed = true; // unreveal a cell with not unrevealed mines associated with it
-                        m_clientCells.Add(cell);
+						revealCell(cell);
                     }
                 }
             }
@@ -299,10 +318,9 @@ namespace GameServer
             // loop through every surrounding cell when choosing a mine, reveal the cell
             //  if there is no unreavealed mines related to it and it is not a mine.
             foreach (Cell cell in surroundingCells(chosenCell))
-                if (cell.UnrevealedPerimitiveMines < 2 && cell.Revealed == false)
+                if (cell.Revealed == false)
                 {
-                    cell.Revealed = true;
-                    m_clientCells.Add(cell);
+					revealCell(cell);
 
                     if (cell.PerimitiveMines == 0) // Only recurse if the revealed cell has no perimitive mines
                         revealCellBorders(cell); // recursive call
@@ -320,6 +338,13 @@ namespace GameServer
             // Multiply y less 1 by the width of the board, add x and subtract 1 to get the index
             return m_serverCells[(locY - 1) * m_boardWidth + locX - 1];
         }
+        
+        private void revealCell(Cell cell) {
+			cell.Revealed = true;
+			m_clientCells[m_serverCells.IndexOf(cell)] = cell;
+			++m_revealedCellsCount;
+        }
+        #endregion
     }
 }
 }

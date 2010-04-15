@@ -12,6 +12,10 @@
  *			- Renamed revealBomb to revealMine.
  *		March 29, 2010
  *			- Added function to handle callbacks. Reduced bloated code.
+ *		April 10, 2010
+ *			- Added a member to track game in progress
+ *			- Added function definition for forfeiting game
+ *			- Updated function definitions to take a Guid
  */
 using System;
 using System.Collections.Generic;
@@ -29,16 +33,20 @@ namespace GameLibrary
         int PlayerTwoScore { get; }
         String PlayerTurn { get; }
         IBoard Board { get; }
+        bool InProgress { get; }
 
         // Methods
         // Player attempts to reveal a mine on a unrevealed cell.
-        void revealMine(int locX, int locY);
+		void revealMine(int locX, int locY, Guid guid);
 
         // Player attempts to reveal an empty cell.
-        void revealCell(int locX, int locY);
+        void revealCell(int locX, int locY, Guid guid);
+        
+        // Player forfeits
+        void forfeitGame(Guid guid);
 
         // Registers the client for callbacks on the server.
-        void RegisterClientCallback(ICallback callback);
+		Guid RegisterClientCallback(ICallback callback);
     }
 }
 }
