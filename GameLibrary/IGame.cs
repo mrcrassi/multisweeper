@@ -16,6 +16,8 @@
  *			- Added a member to track game in progress
  *			- Added function definition for forfeiting game
  *			- Updated function definitions to take a Guid
+ *		April 15, 2010
+ *			- Removed unused string player turn member
  */
 using System;
 using System.Collections.Generic;
@@ -31,7 +33,6 @@ namespace GameLibrary
         // Members
         int PlayerOneScore { get; }
         int PlayerTwoScore { get; }
-        String PlayerTurn { get; }
         IBoard Board { get; }
         bool InProgress { get; }
 

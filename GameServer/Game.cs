@@ -37,6 +37,8 @@
  *			- Added alot of messaging for clients on game ending
  *			- Added helper method to change player turn
  *			- Added helper method to call the end of game
+ *		April 15, 2010
+ *			- Removed unused member String for player turn
  */
 using System;
 using System.Collections.Generic;
@@ -53,7 +55,6 @@ namespace GameServer
     public class Game : MarshalByRefObject, IGame // Derive to use as MarshalByRef and implement IGame
     {
         #region Members
-        private String playerTurn;
         private int m_playerOneScore;
         private int m_playerTwoScore;
         private Board m_board;
@@ -64,11 +65,6 @@ namespace GameServer
 		#endregion
         
         #region Accessors
-        public String PlayerTurn
-        {
-            get { return playerTurn; }
-        }
-
         public int PlayerOneScore
         {
             get { return m_playerOneScore; }
