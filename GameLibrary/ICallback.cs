@@ -3,6 +3,9 @@
  * Date:	March 29, 2010
  * Details:	Interface which holds implementation for the server.
  * Changes:
+ *		April 10, 2010
+ *			- Added function definition for GameMessage callback
+ *			- Updated UpdateBoardCallback to accept a string message
  */
 using System;
 using System.Collections.Generic;
@@ -15,7 +18,8 @@ namespace GameLibrary
 {
     public interface ICallback
     {
-        void UpdateBoardCallback();
+        void UpdateBoardCallback(String msg);
+        void GameMessage(String msg);
     }
 }
 }
