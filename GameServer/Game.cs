@@ -39,6 +39,10 @@
  *			- Added helper method to call the end of game
  *		April 15, 2010
  *			- Removed unused member String for player turn
+ *		April 16, 2010
+ *			- Game is not in progress until two players have joined
+ *			- Only changes the player turn on revealMine or revealCell
+ *			- Added a callback to print a message to the clients text box
  */
 using System;
 using System.Collections.Generic;
@@ -61,7 +65,7 @@ namespace GameServer
         private List<ICallback> m_clientCallbacks = new List<ICallback>();
         private List<Guid> m_guids = new List<Guid>();
         private Guid m_playerTurn;
-		private bool m_inProgress = true;
+		private bool m_inProgress = false;
 		#endregion
         
         #region Accessors
@@ -91,8 +95,6 @@ namespace GameServer
         public Game()
         {
             m_board = new Board(10, 10, 0.15);
-
-            //Todo: Set the player turn
         }
         #endregion
 		
@@ -120,10 +122,17 @@ namespace GameServer
 	            
 				// Add Guid to list
 				m_guids.Add(guid);
-
+					
 				// Update clients
 				System.Console.WriteLine("Player "+(m_guids.IndexOf(guid)+1).ToString()+" has connected to the server.");
 				Fire_UpdateClients("Player " + (m_guids.IndexOf(guid) + 1).ToString() + " has connected to the server.");
+
+				// If we have 2 players, start the game
+				if (m_guids.Count > 1)
+				{
+					m_inProgress = true;
+					Fire_ChatClients("Game has started!");
+				}
             }
             catch (Exception ex)
             {
@@ -161,6 +170,7 @@ namespace GameServer
 					msg = "Player " + playerId.ToString() + " cleared an area."; 
 
 				Fire_UpdateClients(msg);
+				changePlayerTurn();
 			}
         }
 
@@ -199,6 +209,7 @@ namespace GameServer
 				}
 				
 				Fire_UpdateClients(msg);
+				changePlayerTurn();
 			}
         }
 
@@ -261,7 +272,9 @@ namespace GameServer
 			else
 				m_playerTurn = m_guids[0];
         }
-
+		#endregion
+		
+		#region Callback Functions
 		/*
 		 * Author:	Nicholas Lozon
 		 * Date:	March 29, 2010
@@ -282,8 +295,6 @@ namespace GameServer
 
 			foreach (ICallback callback in m_clientCallbacks)
 				callback.UpdateBoardCallback(msg);
-			
-			changePlayerTurn();
         }
         
         private void Fire_MessageClients(String msg)
@@ -306,6 +317,13 @@ namespace GameServer
 			Console.WriteLine(msg);
 			foreach (ICallback callback in m_clientCallbacks)
 				callback.GameMessage(msg);
+        }
+        
+        private void Fire_ChatClients(String msg)
+        {
+			Console.WriteLine(msg);
+			foreach (ICallback callback in m_clientCallbacks)
+				callback.ChatMessage(msg);
         }
         #endregion
     }

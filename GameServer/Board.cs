@@ -289,14 +289,12 @@ namespace GameServer
             //  if thereis no unreavealed mines related to it and it is not a mine.
             foreach (Cell cell in surroundingCells(chosenCell))
             {
-                if (cell.Revealed == false && cell.IsMine != true) // not a mine
+                if (cell.Revealed == false && cell.IsMine != true) // not a mine and not revealed
                 {
                     cell.UnrevealedPerimitiveMines -= 1; // decrement the cells unrevealed mines counter
 
                     if (cell.UnrevealedPerimitiveMines == 0)
-                    {
 						revealCell(cell);
-                    }
                 }
             }
         }

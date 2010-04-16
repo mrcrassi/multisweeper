@@ -6,6 +6,8 @@
  *		April 10, 2010
  *			- Added function definition for GameMessage callback
  *			- Updated UpdateBoardCallback to accept a string message
+ *		April 16, 2010
+ *			- Added function definition for ChatMessage
  */
 using System;
 using System.Collections.Generic;
@@ -20,6 +22,7 @@ namespace GameLibrary
     {
         void UpdateBoardCallback(String msg);
         void GameMessage(String msg);
+        void ChatMessage(String msg);
     }
 }
 }

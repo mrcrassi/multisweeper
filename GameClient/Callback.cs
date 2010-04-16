@@ -11,8 +11,9 @@
  *              meaning the window's thread will be the one creating it. Therefore we will have the
  *              dispatcher for the window's thread.
  *          - Changed UpdateBoardCallback to use the delegates.
- *          - Added getters/setters for the instances of the delegates
-
+ *          - Added getters/setters for the instances of the delegates]
+ *      April 16, 2010
+ *			- Added functionality for the ChatMessage callback.
  */
 using System;
 using System.Collections.Generic;
@@ -31,12 +32,14 @@ namespace GameClient
 		public delegate void UpdatePlayerGrid(String msg);
 		public delegate void UpdatePlayerScore();
         public delegate void GameMessageDelegate(String msg);
+        public delegate void ChatMessageDelegate(String msg);
         #endregion
 
         //references to the delegates
         private UpdatePlayerGrid m_updateGrid;
         private UpdatePlayerScore m_updateScore;
 		private GameMessageDelegate m_gameMessage;
+		private ChatMessageDelegate m_chatMessage;
         
         //this will be set to the same dispatcher which the contructor was created with.
         private Dispatcher m_curDispatch;
@@ -53,12 +56,13 @@ namespace GameClient
             set { m_updateScore = value; }
         }
 
-        public Callback(UpdatePlayerGrid grid, UpdatePlayerScore score, GameMessageDelegate msg)
+        public Callback(UpdatePlayerGrid grid, UpdatePlayerScore score, GameMessageDelegate msg, ChatMessageDelegate chat)
         {
             m_curDispatch = Dispatcher.CurrentDispatcher;
             m_updateGrid += grid;
             m_updateScore += score;
             m_gameMessage += msg;
+            m_chatMessage += chat;
         }
 
         /*
@@ -83,6 +87,11 @@ namespace GameClient
 		public void GameMessage(String msg)
 		{
 			m_curDispatch.BeginInvoke(m_gameMessage, DispatcherPriority.Normal, msg);
+		}
+		
+		public void ChatMessage(String msg)
+		{
+			m_curDispatch.BeginInvoke(m_chatMessage, DispatcherPriority.Normal, msg);
 		}
     }
 }
