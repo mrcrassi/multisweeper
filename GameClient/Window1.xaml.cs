@@ -317,8 +317,7 @@ namespace GameClient
 			}
 			catch (System.Net.WebException)
 			{
-				MessageBox.Show("Lost connection to server.");
-				e.Cancel = true;
+				MessageBox.Show("Lost connection to server." + Environment.NewLine + "The client will now close");
 				btnConnect.IsEnabled = true;
 			}
 		}
