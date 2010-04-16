@@ -43,6 +43,10 @@
  *			- Game is not in progress until two players have joined
  *			- Only changes the player turn on revealMine or revealCell
  *			- Added a callback to print a message to the clients text box
+ *			- Changed m_playerTurn to m_playerTurnGuid
+ *			- Added m_player member for clients to see
+ *			- Fixed bug: Game ends when all cells have been revealed
+ *			- Change the player turn for client
  */
 using System;
 using System.Collections.Generic;
@@ -64,7 +68,8 @@ namespace GameServer
         private Board m_board;
         private List<ICallback> m_clientCallbacks = new List<ICallback>();
         private List<Guid> m_guids = new List<Guid>();
-        private Guid m_playerTurn;
+        private Guid m_playerTurnGuid;
+		private bool m_playerTurn = false;
 		private bool m_inProgress = false;
 		#endregion
         
@@ -87,6 +92,11 @@ namespace GameServer
 		public bool InProgress
 		{
 			get { return m_inProgress; }
+		}
+
+		public bool PlayerTurn
+		{
+			get { return m_playerTurn; }
 		}
 		#endregion
 		
@@ -113,7 +123,7 @@ namespace GameServer
 
 			// Player 1 goes first
 			if (m_guids.Count == 0)
-				m_playerTurn = guid;
+				m_playerTurnGuid = guid;
 				
 			try
 			{
@@ -250,7 +260,7 @@ namespace GameServer
 		 */
         private bool playersTurn(Guid guid)
         {
-            if(guid != m_playerTurn)
+            if(guid != m_playerTurnGuid)
 				return false;
 			
 			return true;
@@ -267,10 +277,16 @@ namespace GameServer
         
         private void changePlayerTurn()
         {
-			if(m_guids[0] == m_playerTurn)
-				m_playerTurn = m_guids[1];
-			else
-				m_playerTurn = m_guids[0];
+			if(m_guids[0] == m_playerTurnGuid) // it is now player 2's turn
+			{
+				m_playerTurnGuid = m_guids[1];
+				m_playerTurn = true;
+			}
+			else // it is now player 1's turn
+			{
+				m_playerTurnGuid = m_guids[0];
+				m_playerTurn = false;
+			}
         }
 		#endregion
 		
@@ -285,6 +301,7 @@ namespace GameServer
         {		
 			if(m_board.RevealedCellsCount == m_board.ServerCells.Count)
 			{
+				m_inProgress = false; // game is done
 				if(m_playerOneScore > m_playerTwoScore)
 					Fire_EndGame(m_guids[0]);
 				else if(m_playerOneScore < m_playerTwoScore)

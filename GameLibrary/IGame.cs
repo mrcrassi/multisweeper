@@ -18,6 +18,8 @@
  *			- Updated function definitions to take a Guid
  *		April 15, 2010
  *			- Removed unused string player turn member
+ *		April 16, 2010
+ *			- Added accessor for PlayerTurn
  */
 using System;
 using System.Collections.Generic;
@@ -35,6 +37,7 @@ namespace GameLibrary
         int PlayerTwoScore { get; }
         IBoard Board { get; }
         bool InProgress { get; }
+        bool PlayerTurn { get; }
 
         // Methods
         // Player attempts to reveal a mine on a unrevealed cell.

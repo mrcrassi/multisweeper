@@ -33,6 +33,8 @@
  *			- Fixed a logic error where revealCell only returns false when it is a mine
  *			- Fixed reveal cell borders to all cells on borders, not just ones with permitive
  *				mines equal to 1.
+ *		April 16, 2010
+ *			- Reveal mine borders in revealCell when the user selects a mine.
  */
 using System;
 using System.Collections.Generic;
@@ -259,7 +261,10 @@ namespace GameServer
 
                 // Return false if its a mine
                 if(cell.IsMine)
+                {
+					revealMineBorders(cell);
 					return false;
+				}
 				
 				// Reveal border if it has no perimitive mines
                 if (cell.PerimitiveMines == 0)
